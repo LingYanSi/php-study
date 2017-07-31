@@ -11,4 +11,7 @@ class SaleDetail extends Base {
         );
         return $this->render('home', $data);
     }
+    function getData() {
+        echo json_encode(array(1, 2, 3, 5));
+    }
 }

@@ -1,20 +1,34 @@
-
 <?php
     define("FUCK", "fuck u", true); // 定义全局字符串常量
+    // phpinfo();
 
     // 注册异常处理函数
     // function handleError(Throwable $err) {
     //     echo "zhimingcuowu";
     // }
     // set_exception_handler(handleError);
-
+    include_once './config/db.php';
+    
     class Handle {
         // 根据一定的路由规则，去执行不同的class
         function __construct($path = 'index') {
             // 去不同的文件夹
+            // 默认执行index
+            // get-data 转 getData
             $fn = substr(strrchr($path, '/'), 1);
-            $realPath = substr($path, 0, strrpos($path, '/'));
+            $fn = empty($fn) ? 'index' : $fn;
+            $fn = preg_replace_callback(
+                '(-(.))',
+                function ($matches) {
+                    return strtoupper($matches[1]);
+                },
+                $fn
+            );
 
+            // 默认的
+            $realPath = substr($path, 0, strrpos($path, '/'));
+            $realPath = empty($realPath) ? '/wpt' : $realPath;
+            // /home/list 会转成 HomeList 然后去 controller/HomeList.php
             $className = preg_replace_callback(
                 '(/(.))',
                 function ($matches) {
